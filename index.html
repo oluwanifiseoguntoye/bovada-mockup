@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bovada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            color: #C41E3A;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .right-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .join-btn {
+            background: #C41E3A;
+            color: white;
+            padding: 0.5rem 2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            background: none;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .globe-icon {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #333;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .game-card {
+            position: relative;
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: scale(0.95);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1;
+        }
+
+        .game-card h2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2rem;
+            text-align: center;
+            z-index: 2;
+            width: 100%;
+            padding: 0 1rem;
+            transition: transform 0.3s ease, font-size 0.3s ease;
+        }
+
+        .game-card:hover h2 {
+            transform: translate(-50%, -50%) scale(1.05);
+            font-size: 2.05rem;
+        }
+
+        .placeholder-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #333;
+        }
+
+        .game-card:nth-child(1) .placeholder-bg {
+            background-image: url('image1.jpeg');
+        }
+
+        .game-card:nth-child(2) .placeholder-bg {
+            background-image: url('image2.jpg');
+        }
+
+        .game-card:nth-child(3) .placeholder-bg {
+            background-image: url('image3.jpeg');
+        }
+
+        .game-card:nth-child(4) .placeholder-bg {
+            background-image: url('image4.jpg');
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">BOVADA</a>
+        <nav>
+            <a href="#">SPORTS</a>
+            <a href="#">CASINO</a>
+            <a href="#">LIVE DEALER</a>
+            <a href="#">POKER</a>
+            <a href="#">HORSES</a>
+        </nav>
+        <div class="right-nav">
+            <button class="join-btn" onclick="alert('Join clicked!')">JOIN</button>
+            <button class="login-btn" onclick="alert('Login clicked!')">LOGIN</button>
+            <div class="globe-icon">
+                🌐 EN
+            </div>
+        </div>
+    </header>
+
+    <main class="game-grid">
+        <div class="game-card">
+            <div class="placeholder-bg"></div>
+            <h2>SPORTS, ESPORTS & LIVE BETTING</h2>
+        </div>
+        <div class="game-card">
+            <div class="placeholder-bg"></div>
+            <h2>100s OF CASINO GAMES</h2>
+        </div>
+        <div class="game-card">
+            <div class="placeholder-bg"></div>
+            <h2>REAL-TIME PLAY WITH LIVE DEALERS</h2>
+        </div>
+        <div class="game-card">
+            <div class="placeholder-bg"></div>
+            <h2>THREE MUST-DROP JACKPOTS</h2>
+        </div>
+    </main>
+</body>
+</html>
