@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nifise</title>
+    <title>Bovada</title>
     <style>
+        html, body {
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+            background: white;
+            transition: background-color 0.3s ease;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,6 +27,7 @@
             padding: 1rem 2rem;
             background: white;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .logo {
@@ -38,37 +47,6 @@
             text-decoration: none;
             color: #333;
             font-weight: bold;
-        }
-
-        .nav-dropdown {
-            position: relative;
-        }
-
-        .nav-dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            min-width: 150px;
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
         }
 
         .right-nav {
@@ -102,26 +80,28 @@
             color: #333;
         }
 
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .hamburger div {
-            width: 25px;
-            height: 3px;
-            background-color: #333;
-            margin: 4px;
-        }
-
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+        main {
+            background: inherit;
+            min-height: calc(100vh - 80px);
             padding: 2rem;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 2rem auto;
+            overflow: hidden;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
         }
 
         .game-card {
@@ -131,10 +111,7 @@
             overflow: hidden;
             cursor: pointer;
             transition: transform 0.3s ease;
-        }
-
-        .game-card:hover {
-            transform: scale(0.95);
+            background: #333;
         }
 
         .game-card::before {
@@ -162,11 +139,6 @@
             transition: transform 0.3s ease, font-size 0.3s ease;
         }
 
-        .game-card:hover h2 {
-            transform: translate(-50%, -50%) scale(1.05);
-            font-size: 2.05rem;
-        }
-
         .placeholder-bg {
             width: 100%;
             height: 100%;
@@ -190,35 +162,281 @@
             background-image: url('image4.jpg');
         }
 
-        @media (max-width: 768px) {
-            nav {
+        .menu-icon {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+
+        .menu-icon div {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .menu {
+            display: none;
+            flex-direction: column;
+            background: white;
+            position: fixed;
+            top: 60px;
+            right: 0;
+            width: 100%;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .menu a {
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 17px;
+            color: #333;
+            display: block;
+            text-align: left;
+            background: white;
+        }
+
+        .menu a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .menu .join-btn, .menu .globe-icon {
+            margin: 0 20px;
+        }
+
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .dark-mode header {
+            background: #121212;
+            color: #ffffff;
+            border-bottom: 1px solid #333;
+        }
+
+        .dark-mode nav a {
+            color: #ffffff;
+        }
+
+        .dark-mode .login-btn {
+            color: #ffffff;
+        }
+
+        .dark-mode .globe-icon {
+            color: #ffffff;
+        }
+
+        .dark-mode .menu {
+            background: #121212;
+        }
+
+        .dark-mode .menu a {
+            color: #ffffff;
+            background: #121212;
+        }
+
+        .dark-mode .menu a:hover {
+            background-color: #222222;
+        }
+
+        .dark-mode .menu-icon div {
+            background-color: #ffffff;
+        }
+
+        .dark-mode .game-card h2 {
+            color: white;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .dark-mode .dark-mode-toggle {
+            color: #ffffff;
+        }
+
+        .play-now-btn {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #C41E3A;
+            color: white;
+            padding: 0.5rem 2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-card:hover .play-now-btn {
+            opacity: 1;
+        }
+
+        .star-rating {
+            position: absolute;
+            bottom: 5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FFD700;
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+      
+       .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 4 columns in a row */
+            gap: 1rem;
+            margin-top: 2rem;
+      }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 1rem;
+        }
+
+        .social-icons a:hover {
+            color: #C41E3A;
+        }
+
+        .newsletter-form {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .newsletter-form input[type="email"] {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 80%;
+            max-width: 400px;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form button {
+            background: #C41E3A;
+            color: white;
+            padding: 0.5rem 2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .newsletter-form .confirmation {
+            display: none;
+            color: #C41E3A;
+            margin-top: 1rem;
+        }
+
+        @media screen and (max-width: 768px) {
+            nav, .right-nav {
                 display: none;
-                flex-direction: column;
-                width: 100%;
-                background-color: white;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                z-index: 2;
             }
 
-            nav a {
-                padding: 1rem;
-                border-bottom: 1px solid #ddd;
-                width: 100%;
-                text-align: left;
-            }
-
-            .hamburger {
+            .menu-icon {
                 display: flex;
             }
 
-            .right-nav {
-                display: none;
+            .menu.active {
+                display: flex;
             }
 
-            .nav-dropdown .dropdown-content {
-                position: static;
+            .game-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-card {
+                height: auto;
+                padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            }
+
+            .game-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .star-rating {
+                bottom: 3rem;
+            }
+
+            .play-now-btn {
+                bottom: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            header {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .menu a {
+                font-size: 1rem;
+            }
+
+            .join-btn, .login-btn {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+            }
+
+            .globe-icon {
+                font-size: 1rem;
+            }
+
+            .dark-mode-toggle {
+                font-size: 1rem;
+            }
+
+            footer a {
+                font-size: 1rem;
+            }
+
+            .social-icons a {
+                font-size: 1rem;
+            }
+
+            .newsletter-form input[type="email"] {
+                width: 90%;
             }
         }
     </style>
@@ -226,26 +444,14 @@
 <body>
     <header>
         <a href="#" class="logo">BOVADA</a>
-        <div class="hamburger" onclick="toggleNav()">
+        <div class="menu-icon" onclick="toggleMenu()">
             <div></div>
             <div></div>
             <div></div>
         </div>
         <nav>
-            <div class="nav-dropdown">
-                <a href="#">SPORTS</a>
-                <div class="dropdown-content">
-                    <a href="#">Sub-link 1</a>
-                    <a href="#">Sub-link 2</a>
-                </div>
-            </div>
-            <div class="nav-dropdown">
-                <a href="#">CASINO</a>
-                <div class="dropdown-content">
-                    <a href="#">Sub-link 1</a>
-                    <a href="#">Sub-link 2</a>
-                </div>
-            </div>
+            <a href="#">SPORTS</a>
+            <a href="#">CASINO</a>
             <a href="#">LIVE DEALER</a>
             <a href="#">POKER</a>
             <a href="#">HORSES</a>
@@ -256,33 +462,136 @@
             <div class="globe-icon">
                 🌐 EN
             </div>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
+        </div>
+        <div class="menu">
+            <a href="#">SPORTS</a>
+            <a href="#">CASINO</a>
+            <a href="#">LIVE DEALER</a>
+            <a href="#">POKER</a>
+            <a href="#">HORSES</a>
+            <button class="join-btn" onclick="alert('Join clicked!')">JOIN</button>
+            <div class="globe-icon">
+                🌐 EN
+            </div>
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
         </div>
     </header>
 
-    <main class="game-grid">
-        <div class="game-card">
-            <div class="placeholder-bg"></div>
-            <h2>SPORTS, ESPORTS & LIVE BETTING</h2>
+    <main>
+        <div class="carousel">
+            <div class="carousel-inner" id="carouselInner">
+                <div class="carousel-item">
+                    <div class="game-card">
+                        <div class="placeholder-bg"></div>
+                        <h2>SPORTS, ESPORTS & LIVE BETTING</h2>
+                        <div class="star-rating">★★★★☆</div>
+                        <button class="play-now-btn" onclick="alert('Play Now clicked!')">Play Now</button>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="game-card">
+                        <div class="placeholder-bg"></div>
+                        <h2>100s OF CASINO GAMES</h2>
+                        <div class="star-rating">★★★☆☆</div>
+                        <button class="play-now-btn" onclick="alert('Play Now clicked!')">Play Now</button>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="game-card">
+                        <div class="placeholder-bg"></div>
+                        <h2>REAL-TIME PLAY WITH LIVE DEALERS</h2>
+                        <div class="star-rating">★★★★★</div>
+                        <button class="play-now-btn" onclick="alert('Play Now clicked!')">Play Now</button>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="game-card">
+                        <div class="placeholder-bg"></div>
+                        <h2>THREE MUST-DROP JACKPOTS</h2>
+                        <div class="star-rating">★★★★☆</div>
+                        <button class="play-now-btn" onclick="alert('Play Now clicked!')">Play Now</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="game-card">
-            <div class="placeholder-bg"></div>
-            <h2>100s OF CASINO GAMES</h2>
-        </div>
-        <div class="game-card">
-            <div class="placeholder-bg"></div>
-            <h2>REAL-TIME PLAY WITH LIVE DEALERS</h2>
-        </div>
-        <div class="game-card">
-            <div class="placeholder-bg"></div>
-            <h2>THREE MUST-DROP JACKPOTS</h2>
+
+        <div class="game-grid">
+            <div class="game-card">
+                <div class="placeholder-bg"></div>
+                <h2>SPORTS, ESPORTS & LIVE BETTING</h2>
+                <div class="star-rating">★★★★☆</div>
+                <button class="play-now-btn" onclick="alert('Play Now clicked!')">Play Now</button>
+            </div>
+            <div class="game-card">
+                <div class="placeholder-bg"></div>
+                <h2>100s OF CASINO GAMES</h2>
+                <div class="star-rating">★★★☆☆</div>
+                <button class="play-now-btn" onclick="alert('Play Now clicked!')">Play Now</button>
+            </div>
+            <div class="game-card">
+                <div class="placeholder-bg"></div>
+                <h2>REAL-TIME PLAY WITH LIVE DEALERS</h2>
+                <div class="star-rating">★★★★★</div>
+                <button class="play-now-btn" onclick="alert('Play Now clicked!')">Play Now</button>
+            </div>
+            <div class="game-card">
+                <div class="placeholder-bg"></div>
+                <h2>THREE MUST-DROP JACKPOTS</h2>
+                <div class="star-rating">★★★★☆</div>
+                <button class="play-now-btn" onclick="alert('Play Now clicked!')">Play Now</button>
+            </div>
         </div>
     </main>
 
+    <footer>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Contact Us</a>
+        <div class="social-icons">
+            <a href="https://www.facebook.com" target="_blank">🔗</a>
+            <a href="https://www.twitter.com" target="_blank">🐦</a>
+            <a href="https://www.instagram.com" target="_blank">📸</a>
+            <a href="https://www.linkedin.com" target="_blank">🔗</a>
+        </div>
+        <div class="newsletter-form">
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <button type="button" onclick="subscribeNewsletter()">Subscribe</button>
+            <div class="confirmation" id="confirmation">Thank you for subscribing!</div>
+        </div>
+    </footer>
+
     <script>
-        function toggleNav() {
-            const nav = document.querySelector('nav');
-            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('active');
         }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function subscribeNewsletter() {
+            const email = document.getElementById('email').value;
+            if (email) {
+                // Simulate subscription
+                document.getElementById('confirmation').style.display = 'block';
+                document.getElementById('email').value = '';
+            }
+        }
+
+        let currentIndex = 0;
+        const items = document.querySelectorAll('.carousel-item');
+        const totalItems = items.length;
+
+        function showNextItem() {
+            const carouselInner = document.getElementById('carouselInner');
+            currentIndex = (currentIndex + 1) % totalItems;
+            const newTransformValue = `translateX( ${-currentIndex * 100}%)`;
+            carouselInner.style.transform = newTransformValue;
+        }
+
+        setInterval(showNextItem, 3000);
     </script>
 </body>
 </html>
